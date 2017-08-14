@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>bundleid</key>
+	<string>org.kawaz.dash.workflow</string>
+	<key>connections</key>
+	<dict>
+		<key>418ED302-B482-4959-9DB7-2FF667AA0C9A</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>18B95FFB-E89F-4108-99A8-2BB887A59221</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>destinationuid</key>
+				<string>6E33084D-2DF5-4F46-9156-15CB677B8140</string>
+				<key>modifiers</key>
+				<integer>1048576</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
+	</dict>
+	<key>createdby</key>
+	<string>giginet</string>
+	<key>description</key>
+	<string>Search directory via autojump</string>
+	<key>disabled</key>
+	<false/>
+	<key>name</key>
+	<string>Autojump</string>
+	<key>objects</key>
+	<array>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>alfredfiltersresults</key>
+				<false/>
+				<key>argumenttype</key>
+				<integer>0</integer>
+				<key>escaping</key>
+				<integer>127</integer>
+				<key>keyword</key>
+				<string>j</string>
+				<key>queuedelaycustom</key>
+				<integer>1</integer>
+				<key>queuedelayimmediatelyinitially</key>
+				<false/>
+				<key>queuedelaymode</key>
+				<integer>0</integer>
+				<key>queuemode</key>
+				<integer>1</integer>
+				<key>runningsubtext</key>
+				<string></string>
+				<key>script</key>
+				<string>import commands
+import re
+import os
+from feedback import Feedback
+
+os.putenv('AUTOJUMP_SOURCED', '1')
+
+IMG = os.path.join('autojump', 'bin', 'icon.png')
+AUTOJUMP = os.path.join('autojump', 'bin', 'autojump')
+COMMAND = '%s --complete %s'
+
+query = '{query}'
+fb = Feedback()
+
+directories = commands.getoutput(COMMAND % (AUTOJUMP, query))
+
+if directories:
+	candidates = directories.split('\n')
+	for dir in candidates:
+		match = re.match(r'^(.+?)__[1-9]__(?P&lt;path&gt;/.+)$', dir)
+		if match:
+			path = match.group('path')
+			fb.add_item("Open %s" % path, arg=path, icon=IMG)
+	print fb
+else:
+	stats = commands.getoutput('autojump/bin/autojump -s')
+	candidates = reversed(stats.split('\n'))
+	for dir in candidates:
+		match = re.match(r'^\d+\.\d:\s+(?P&lt;path&gt;/.+)$', dir)
+		if match:
+			path = match.group('path')
+			fb.add_item('Open %s' % path, arg=path, icon=IMG)
+	print fb
+</string>
+				<key>scriptargtype</key>
+				<integer>0</integer>
+				<key>scriptfile</key>
+				<string></string>
+				<key>subtext</key>
+				<string>Jump contains "..."</string>
+				<key>title</key>
+				<string>Open with autojump</string>
+				<key>type</key>
+				<integer>3</integer>
+				<key>withspace</key>
+				<true/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.scriptfilter</string>
+			<key>uid</key>
+			<string>418ED302-B482-4959-9DB7-2FF667AA0C9A</string>
+			<key>version</key>
+			<integer>2</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>concurrently</key>
+				<false/>
+				<key>escaping</key>
+				<integer>127</integer>
+				<key>script</key>
+				<string>import os
+import commands
+
+AUTOJUMP = 'autojump/bin/autojump'
+
+query = '{query}'
+
+abspath = os.path.abspath(AUTOJUMP)
+os.chdir(query)
+out = commands.getoutput('python %s -i' % abspath)
+commands.getoutput('open %s -a iTerm' % query)</string>
+				<key>scriptargtype</key>
+				<integer>0</integer>
+				<key>scriptfile</key>
+				<string></string>
+				<key>type</key>
+				<integer>3</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>18B95FFB-E89F-4108-99A8-2BB887A59221</string>
+			<key>version</key>
+			<integer>2</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>concurrently</key>
+				<false/>
+				<key>escaping</key>
+				<integer>127</integer>
+				<key>script</key>
+				<string>import os
+import commands
+
+AUTOJUMP = 'autojump/bin/autojump'
+
+query = '{query}'
+
+abspath = os.path.abspath(AUTOJUMP)
+os.chdir(query)
+out = commands.getoutput('python %s -i' % abspath)
+commands.getoutput('open %s -a Atom' % query)</string>
+				<key>scriptargtype</key>
+				<integer>0</integer>
+				<key>scriptfile</key>
+				<string></string>
+				<key>type</key>
+				<integer>3</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>6E33084D-2DF5-4F46-9156-15CB677B8140</string>
+			<key>version</key>
+			<integer>2</integer>
+		</dict>
+	</array>
+	<key>readme</key>
+	<string>This is an Alfred 2 workflow to provide you a faster way to navigate your filesystem via autojump(https://github.com/joelthelion/autojump)</string>
+	<key>uidata</key>
+	<dict>
+		<key>18B95FFB-E89F-4108-99A8-2BB887A59221</key>
+		<dict>
+			<key>xpos</key>
+			<integer>700</integer>
+			<key>ypos</key>
+			<real>10</real>
+		</dict>
+		<key>418ED302-B482-4959-9DB7-2FF667AA0C9A</key>
+		<dict>
+			<key>xpos</key>
+			<integer>300</integer>
+			<key>ypos</key>
+			<real>10</real>
+		</dict>
+		<key>6E33084D-2DF5-4F46-9156-15CB677B8140</key>
+		<dict>
+			<key>xpos</key>
+			<integer>710</integer>
+			<key>ypos</key>
+			<integer>180</integer>
+		</dict>
+	</dict>
+	<key>webaddress</key>
+	<string>http://giginet.hateblo.jp/entry/2014/06/26/113624</string>
+</dict>
+</plist>
