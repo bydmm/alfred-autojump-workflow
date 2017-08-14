@@ -1,3 +1,7 @@
+# 前情提要
+
+定制了此workflow的功能，现在是按回车打开iTerm, 按CMD+回车打开ATOM， 如果不喜欢可以可以自己改一下Alfred的配置，比较简单。
+
 # autojump.alfredworkflow
 
 This is an Alfred 2 workflow to provide you a faster way to navigate your filesystem via [autojump](https://github.com/joelthelion/autojump)
